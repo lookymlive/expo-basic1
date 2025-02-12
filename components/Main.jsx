@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { FlatList, View, ScrollView, ActivityIndicator } from "react-native";
+import { FlatList, View, ActivityIndicator } from "react-native";
 import { getLatestGames } from "../lib/metacritic";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AnimatedGameCard } from "./GameCard";
