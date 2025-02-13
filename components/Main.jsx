@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-
-import { FlatList, View, ActivityIndicator } from "react-native";
+import { FlatList, View, ActivityIndicator, Text } from "react-native";
 import { getLatestGames } from "../lib/metacritic";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AnimatedGameCard } from "./GameCard";
@@ -8,12 +7,18 @@ import { Logo } from "./Logo";
 
 export function Main() {
   const [games, setGames] = useState([]);
+  const [error, setError] = useState(null);
   const insets = useSafeAreaInsets();
 
   useEffect(() => {
-    getLatestGames().then((games) => {
-      setGames(games);
-    });
+    getLatestGames()
+      .then((games) => {
+        setGames(games);
+      })
+      .catch((err) => {
+        console.error(err);
+        setError(err.message);
+      });
   }, []);
 
   return (
@@ -21,7 +26,9 @@ export function Main() {
       <View style={{ marginBottom: 20 }}>
         <Logo />
       </View>
-      {games.length === 0 ? (
+      {error ? (
+        <Text style={{ color: "red" }}>{error}</Text>
+      ) : games.length === 0 ? (
         <ActivityIndicator color={"#fff"} size={"large"} />
       ) : (
         <FlatList
